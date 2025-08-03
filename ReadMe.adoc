@@ -1,0 +1,67 @@
+:Author: Noli Licudo
+:Email: nolilicudo@gmail.com
+:Date: 18/06/2025
+:Revision: 1.1.0
+:License: Public Domain
+
+= Project: Temperature and Humidity Monitoring Application with MIT App Interface
+
+This project is an IoT-based system that monitors temperature and humidity using a DHT11 sensor and ESP8266, with control of LEDs (Green/Red) based on temperature thresholds.  
+It integrates with **Arduino IoT Cloud** and provides a local web server API for communication with an **MIT App Inventor mobile application**.
+
+== Step 1: Installation
+
+1. Clone or download this repository.  
+2. Open the `.ino` sketch in the Arduino IDE.  
+3. Install the required libraries:
+   - `DHT sensor library`
+   - `DHT Unified Sensor`
+   - `ESP8266WiFi`
+   - `ArduinoIoTCloud`
+4. Configure your WiFi and Arduino Cloud credentials in `arduino_secrets.h`.
+5. Upload the code to your ESP8266 board.
+
+== Step 2: Assemble the Circuit
+
+Assemble the circuit using the `layout.png` diagram included in this project.  
+
+=== Basic Wiring:
+- DHT11 Data → D2 (GPIO4)
+- Red LED → D6 (GPIO12)
+- Green LED → D5 (GPIO14)
+- VCC → 3.3V
+- GND → GND
+
+== Step 3: Load the Code
+
+1. Upload the provided Arduino code to the ESP8266.  
+2. Open Serial Monitor to check the device IP address.  
+3. Use this IP in the MIT App to communicate with the ESP8266.
+
+== Step 4: MIT App Inventor Integration
+
+1. Import the provided `.aia` file in MIT App Inventor.  
+2. In the app, set the ESP8266 IP Address (from Serial Monitor).  
+3. The app can:
+   - Display **temperature** and **humidity** readings.
+   - Toggle **Green** and **Red** LEDs remotely.
+   - Receive real-time status in JSON format.
+
+== API Endpoints for MIT App
+
+| Endpoint       | Description                  |
+|----------------|------------------------------|
+| `/green/on`    | Turns Green LED ON           |
+| `/green/off`   | Turns Green LED OFF          |
+| `/red/on`      | Turns Red LED ON             |
+| `/red/off`     | Turns Red LED OFF (only if temperature ≤ 30°C) |
+| `/`            | Returns JSON with temperature, humidity, and LED states |
+
+Example JSON response:
+```json
+{
+  "temperature": 28.5,
+  "humidity": 65.2,
+  "greenLED": 1,
+  "redLED": 0
+}
